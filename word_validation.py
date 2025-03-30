@@ -56,5 +56,7 @@ class WordValidationDialog:
 
     def get_result(self):
         return self.result
+    
+    #callback para validar la palabra
     def set_validate_callback(self, callback):
             self.validate_callback = callback

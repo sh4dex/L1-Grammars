@@ -18,7 +18,8 @@ class GrammarInputWindow:
         self.production_entries = []
         
         self.setup_ui()
-        
+    
+    #configuracion de la Interfaz
     def setup_ui(self):
         container = ttk.Frame(self.window)
         container.pack(fill="both", expand=True)
@@ -85,6 +86,7 @@ class GrammarInputWindow:
         self.scrollable_frame.bind('<Enter>', lambda e: self._bound_to_mousewheel(e, canvas))
         self.scrollable_frame.bind('<Leave>', lambda e: self._unbound_to_mousewheel(e, canvas))
 
+    #eSta fucnion en el Presente la llama 
     def on_submit(self):
         if hasattr(self, 'submit_callback'):
             terminal_symbols = [entry.winfo_children()[0].get() for entry in self.terminal_entries]
@@ -93,10 +95,10 @@ class GrammarInputWindow:
             
             # Get productions as tuples (left_side, right_side)
             productions = []
-            for entry_frame in self.production_entries:
+            for entry_frame in self.production_entries:         #Una produccion tiene ("s","->","Aa")
                 left = entry_frame.winfo_children()[0].get()  # Left side entry
                 right = entry_frame.winfo_children()[2].get() # Right side entry (index 2 because of arrow label)
-                if left and right:  # Only add if both sides have content
+                if left and right:  # No vacio
                     productions.append((left, right))
             
             self.submit_callback(terminal_symbols, non_terminal_symbols, axiomatic, productions)
@@ -104,9 +106,10 @@ class GrammarInputWindow:
     def set_submit_callback(self, callback):
         self.submit_callback = callback
 
-    def validate_single_char(self, P):
+    def validate_single_char(self, P): #
         return len(P) <= 1
 
+    #Scrollbar 
     def _bound_to_mousewheel(self, event, canvas):
         canvas.bind_all("<MouseWheel>", lambda e: self._on_mousewheel(e, canvas))
 

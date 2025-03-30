@@ -1,0 +1,4 @@
+env
+env*
+*.class
+__pycache__
