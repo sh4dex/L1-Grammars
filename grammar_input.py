@@ -4,15 +4,18 @@ import ttkbootstrap as ttk
 
 class GrammarInputWindow:
     def __init__(self):
-        #self.window = ttk.Window(themename="darkly")
-        self.window = ttk.Window()
-        self.window.title("Grammar Input")
+        # Usar un tema consistente 
+        self.window = ttk.Window(themename="cosmo")  # Tema más moderno y consistente
+        self.window.title("Entrada de Gramática")
         self.window.geometry("900x700")
         
+        # Mejorar el estilo de los elementos
         self.style = ttk.Style()
-        self.style.configure("Custom.TEntry", padding=10, relief="flat")
-        self.style.configure("AddField.TButton", padding=8, background="#28a745")
-        self.style.configure("Delete.TButton", padding=6, background="#dc3545")
+        self.style.configure("Custom.TEntry", padding=10, relief="flat", font=("Segoe UI", 10))
+        self.style.configure("AddField.TButton", padding=8, font=("Segoe UI", 9, "bold"))
+        self.style.configure("Delete.TButton", padding=6, font=("Segoe UI", 9))
+        self.style.configure("TLabelframe.Label", font=("Segoe UI", 11, "bold"))
+        self.style.configure("TButton", font=("Segoe UI", 10))
         
         self.terminal_entries = []
         self.non_terminal_entries = []

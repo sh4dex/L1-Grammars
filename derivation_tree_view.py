@@ -5,7 +5,27 @@ class DerivationTreeView:
     def __init__(self, parent):
         self.parent = parent
         self.frame = ttk.Frame(parent)
-        self.canvas = tk.Canvas(self.frame, bg="#f0f0f0", highlightthickness=0)
+        
+        # Añadir un título descriptivo
+        title_label = ttk.Label(
+            self.frame, 
+            text="Árbol de Derivación", 
+            font=("Segoe UI", 14, "bold"),
+            bootstyle="primary"
+        )
+        title_label.pack(pady=(10, 5))
+        
+        # Añadir instrucciones
+        instructions = ttk.Label(
+            self.frame,
+            text="Se muestra la secuencia de derivaciones aplicando las reglas de producción",
+            font=("Segoe UI", 10),
+            bootstyle="secondary"
+        )
+        instructions.pack(pady=(0, 10))
+        
+        # Mejorar apariencia del canvas
+        self.canvas = tk.Canvas(self.frame, bg="#f8f9fa", highlightthickness=0)
         self.canvas.pack(fill="both", expand=True, padx=10, pady=10)
         
         # Configuración del scrolling horizontal

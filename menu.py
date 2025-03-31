@@ -23,13 +23,39 @@ class MenuWindow:
         self.setup_ui()
         
     def setup_ui(self):
-        # Create single button frame for all buttons
-        button_frame = ttk.Frame(self.window, padding=20)
+        # Configurar encabezado 
+        header_frame = ttk.Frame(self.window, padding=20)
+        header_frame.pack(fill="x")
+        
+        title = ttk.Label(
+            header_frame, 
+            text="Generador de Árboles de Gramática",
+            font=("Segoe UI", 16, "bold"), 
+            bootstyle="primary"
+        )
+        title.pack(anchor="center", pady=10)
+        
+        subtitle = ttk.Label(
+            header_frame,
+            text="Herramienta para trabajar con gramáticas y validar palabras",
+            font=("Segoe UI", 10),
+            bootstyle="secondary" 
+        )
+        subtitle.pack(anchor="center", pady=(0, 20))
+        
+        # Mejorar barra de botones
+        button_frame = ttk.Frame(self.window, padding=10)
         button_frame.pack(fill="x")
         
-        # Create all buttons in a single row
-        self.input_grammar_btn = ttk.Button(button_frame, text="Edit Grammar", style="primary", command=self.on_input_grammar)
-        self.input_grammar_btn.pack(side="left", padx=5)
+        # Botones con iconos (requiere agregar iconos en una carpeta 'icons')
+        self.input_grammar_btn = ttk.Button(
+            button_frame, 
+            text="Editar Gramática", 
+            bootstyle="primary", 
+            width=20,
+            command=self.on_input_grammar
+        )
+        self.input_grammar_btn.pack(side="left", padx=10, pady=5)
         
         self.check_word_btn = ttk.Button(button_frame, text="Comprobar palabra", style="info", command=self.on_check_word)
         self.check_word_btn.pack(side="left", padx=5)

@@ -16,14 +16,36 @@ class WordValidationDialog:
         self.setup_ui()
         
     def setup_ui(self):
-        # Create and place widgets
+        # Crear y colocar widgets con mejor diseño
         main_frame = ttk.Frame(self.window, padding="20")
         main_frame.pack(fill="both", expand=True)
         
-        ttk.Label(main_frame, text="Enter word to validate:").pack(pady=(0, 10))
+        # Título y descripción
+        title = ttk.Label(
+            main_frame, 
+            text="Validación de Palabras",
+            font=("Segoe UI", 14, "bold"),
+            bootstyle="primary"
+        )
+        title.pack(pady=(0, 5))
         
-        self.word_entry = ttk.Entry(main_frame)
-        self.word_entry.pack(fill="x", pady=(0, 20))
+        desc = ttk.Label(
+            main_frame,
+            text="Ingrese una palabra para verificar si pertenece a la gramática definida",
+            font=("Segoe UI", 10),
+            bootstyle="secondary",
+            wraplength=300
+        )
+        desc.pack(pady=(0, 20))
+        
+        entry_frame = ttk.Frame(main_frame)
+        entry_frame.pack(fill="x", pady=10)
+        
+        ttk.Label(entry_frame, text="Palabra a validar:", font=("Segoe UI", 10)).pack(anchor="w", pady=(0, 5))
+        
+        # Mejorar el campo de entrada
+        self.word_entry = ttk.Entry(entry_frame, font=("Segoe UI", 12))
+        self.word_entry.pack(fill="x", pady=(0, 10))
         
         # Validate command to prevent spaces
         vcmd = (self.window.register(self._validate_input), '%P')

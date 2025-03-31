@@ -13,6 +13,26 @@ class GeneralTreeView:
         self.window.title("Árbol de Derivación General")
         self.window.geometry("1200x900")  # Increased window size
         
+        # Añadir cabecera informativa
+        header = ttk.Frame(self.window, padding=10)
+        header.pack(fill="x")
+        
+        title = ttk.Label(
+            header,
+            text="Árbol de Derivación General",
+            font=("Segoe UI", 16, "bold"),
+            bootstyle="primary"
+        )
+        title.pack(pady=(5, 0))
+        
+        grammar_info = ttk.Label(
+            header,
+            text=f"Axioma: {axiomatic} | No terminales: {', '.join(non_terminal_chars)} | Terminales: {', '.join(terminal_chars)}",
+            font=("Segoe UI", 9),
+            bootstyle="secondary" 
+        )
+        grammar_info.pack(pady=(0, 10))
+        
         self.frame = ttk.Frame(self.window)
         self.canvas = tk.Canvas(self.frame, bg="white", highlightthickness=0)
         self.canvas.pack(fill="both", expand=True, padx=10, pady=10)
@@ -68,17 +88,24 @@ class GeneralTreeView:
                 self.generate_tree(child, child_x, child_y, level + 1, (x, y))
     
     def draw_node(self, text, x, y):
-        # Draw circle
+        # Draw node with better styling
         radius = self.node_width/2
+        
+        # Determinar color basado en si contiene símbolos no terminales
+        contains_non_terminal = any(char in self.non_terminal_chars for char in text)
+        fill_color = "#e3f2fd" if contains_non_terminal else "#f1f8e9"
+        outline_color = "#1976d2" if contains_non_terminal else "#689f38"
+        
         self.canvas.create_oval(
             x - radius, y - radius,
             x + radius, y + radius,
-            fill="white", outline="black", width=2
+            fill=fill_color, outline=outline_color, width=2
         )
         # Draw text
         self.canvas.create_text(
             x, y, text=text,
-            font=("Arial", 12, "bold")  # Larger font
+            font=("Arial", 12, "bold"),
+            fill="#212121"
         )
         return (x, y)
     
