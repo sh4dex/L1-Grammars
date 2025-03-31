@@ -1,13 +1,12 @@
 import tkinter as tk
-from tkinter import messagebox
-import ttkbootstrap as ttk
-from grammar_input import GrammarInputWindow
+from tkinter import ttk
 
 class MenuWindow:
     def __init__(self):
-        self.window = ttk.Window(themename="darkly")
+        self.window = tk.Tk()
         self.window.title("Grammar Tree Generator")
         self.window.geometry("800x600")
+        self.window.configure(bg="#f0f0f0")
         
         # Initialize UI components
         self.input_grammar_btn = None
@@ -28,20 +27,20 @@ class MenuWindow:
         button_frame.pack(fill="x")
         
         # Create buttons
-        self.input_grammar_btn = ttk.Button(button_frame, text="Edit Grammar", style="primary", command=self.on_input_grammar)
+        self.input_grammar_btn = ttk.Button(button_frame, text="Edit Grammar", command=self.on_input_grammar)
         self.input_grammar_btn.pack(side="left", padx=5)
         
-        self.check_word_btn = ttk.Button(button_frame, text="Comprobar palabra", style="info", command=self.on_check_word)
+        self.check_word_btn = ttk.Button(button_frame, text="Comprobar palabra", command=self.on_check_word)
         self.check_word_btn.pack(side="left", padx=5)
         
         # Create frames for trees
         trees_frame = ttk.Frame(self.window, padding=20)
         trees_frame.pack(fill="both", expand=True)
         
-        self.general_tree_btn = ttk.Button(trees_frame, text="Árbol derivación general", style="success")
+        self.general_tree_btn = ttk.Button(trees_frame, text="Árbol derivación general")
         self.general_tree_btn.pack(side="left", expand=True, padx=10)
         
-        self.particular_tree_btn = ttk.Button(trees_frame, text="Árbol derivación particular", style="success")
+        self.particular_tree_btn = ttk.Button(trees_frame, text="Árbol derivación particular", command=self.on_show_tree)
         self.particular_tree_btn.pack(side="right", expand=True, padx=10)
         
         # Grammar display frame
@@ -70,10 +69,15 @@ class MenuWindow:
     def on_check_word(self):
         if hasattr(self, 'check_callback'):
             self.check_callback()
-            
-    def set_callbacks(self, input_cb, check_cb):
+
+    def on_show_tree(self):
+        if hasattr(self, 'tree_callback'):
+            self.tree_callback()
+
+    def set_callbacks(self, input_cb, check_cb, tree_callback):
         self.input_callback = input_cb
         self.check_callback = check_cb
+        self.tree_callback = tree_callback
         
     def update_grammar_display(self, v_set, sigma_set, s_symbol, productions):
         self.v_label.config(text=f"V = {v_set}")
@@ -86,4 +90,3 @@ class MenuWindow:
             
     def run(self):
         self.window.mainloop()
-
