@@ -34,7 +34,8 @@ class MenuWindow:
         self.check_word_btn = ttk.Button(button_frame, text="Comprobar palabra", style="info", command=self.on_check_word)
         self.check_word_btn.pack(side="left", padx=5)
         
-        self.general_tree_btn = ttk.Button(button_frame, text="Árbol derivación general", style="success")
+        self.general_tree_btn = ttk.Button(button_frame, text="Árbol derivación general", 
+                                         style="success", command=self.on_general_tree)
         self.general_tree_btn.pack(side="left", padx=5)
         
         self.particular_tree_btn = ttk.Button(button_frame, text="Árbol derivación particular", style="success")
@@ -67,9 +68,10 @@ class MenuWindow:
         if hasattr(self, 'check_callback'):
             self.check_callback()
             
-    def set_callbacks(self, input_cb, check_cb):
+    def set_callbacks(self, input_cb, check_cb, general_tree_cb):
         self.input_callback = input_cb
         self.check_callback = check_cb
+        self.general_tree_callback = general_tree_cb
         
     def update_grammar_display(self, v_set, sigma_set, s_symbol, productions):
         self.v_label.config(text=f"V = {v_set}")
@@ -82,4 +84,8 @@ class MenuWindow:
             
     def run(self):
         self.window.mainloop()
+
+    def on_general_tree(self):
+        if hasattr(self, 'general_tree_callback'):
+            self.general_tree_callback()
 

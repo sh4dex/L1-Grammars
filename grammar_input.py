@@ -164,6 +164,11 @@ class GrammarInputWindow:
         right_entry = ttk.Entry(frame, style="Custom.TEntry", width=30)
         right_entry.pack(side="left", padx=5)
         
+        # Lambda button
+        lambda_btn = ttk.Button(frame, text="λ", 
+                              command=lambda: right_entry.insert(tk.END, "λ"))
+        lambda_btn.pack(side="right", padx=2)
+        
         delete_btn = ttk.Button(frame, text="Delete", style="Delete.TButton",
                             command=lambda: self.delete_entry(frame, self.production_entries))
         delete_btn.pack(side="right", padx=5)
