@@ -108,15 +108,27 @@ class Presenter:
         return self.generate_derivation(word, self.axiomatic_char)
     
     #TODO: Explicar cuando llegue a casa
-    def generate_derivation(self, target, current):
-        if current == target:
-            return True
-        if len(current) > len(target):
+    def generate_derivation(self, target, current, depth=0):
+        if depth > 100:
             return False
+            
+        # Handle empty string (lambda) case
+        current = current.replace("λ", "")
+            
+        if current == target:
+            if any(char in self.non_terminal_chars for char in current):
+                return False
+            return True
+            
+        if len(current) > len(target) * 2:
+            return False
+            
         for left, right in self.production_rules:
             if left in current:
-                new_current = current.replace(left, right, 1)
-                if self.generate_derivation(target, new_current):
+                # Handle lambda production by replacing with empty string
+                new_right = "" if right == "λ" else right
+                new_current = current.replace(left, new_right, 1)
+                if self.generate_derivation(target, new_current, depth + 1):
                     return True
         return False
     
