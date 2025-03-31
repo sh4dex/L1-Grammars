@@ -5,7 +5,7 @@ from grammar_input import GrammarInputWindow
 
 class MenuWindow:
     def __init__(self):
-        self.window = ttk.Window(themename="darkly")
+        self.window = ttk.Window()
         self.window.title("Grammar Tree Generator")
         self.window.geometry("800x600")
         
@@ -34,13 +34,12 @@ class MenuWindow:
         self.check_word_btn = ttk.Button(button_frame, text="Comprobar palabra", style="info", command=self.on_check_word)
         self.check_word_btn.pack(side="left", padx=5)
         
-        self.general_tree_btn = ttk.Button(button_frame, text="Árbol derivación general", 
-                                         style="success", command=self.on_general_tree)
+        self.general_tree_btn = ttk.Button(button_frame, text="Árbol derivación general", style="success", command=self.on_general_tree)
         self.general_tree_btn.pack(side="left", padx=5)
-        
+        '''
         self.particular_tree_btn = ttk.Button(button_frame, text="Árbol derivación particular", style="success")
         self.particular_tree_btn.pack(side="left", padx=5)
-        
+        '''
         # Grammar display frame
         self.grammar_frame = ttk.LabelFrame(self.window, text="Current Grammar", padding=20)
         self.grammar_frame.pack(fill="both", expand=True, padx=20, pady=20)

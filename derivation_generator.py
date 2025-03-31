@@ -5,6 +5,12 @@ class DerivationGenerator:
         self.production_rules = production_rules
         self.derivation_steps = []
 
+    '''
+    Este es el metodo importante que recorre la palabra que se le ingresa y valida si se tienen lambdas
+    en la producción, si es asi, se reemplaza por una cadena vacia, si no, se reemplaza por la producción
+    de la derecha, si no se encuentra la producción en la izquierda, se retorna False, si se encuentra
+    la producción en la izquierda, se reemplaza por la producción de la derecha, si la producción de la
+    '''
     def generate(self, target, current, depth=0):
         if depth > 100:
             return False
@@ -23,7 +29,7 @@ class DerivationGenerator:
             if left in current:
                 new_right = "" if right == "λ" else right
                 new_current = current.replace(left, new_right, 1)
-                # Store the derivation step
+                # Se guarda el paso de la derivación en una lista para luego mostrarlos en el arbol de derivación
                 self.derivation_steps.append((current, (left, right), new_current))
                 if self.generate(target, new_current, depth + 1):
                     return True

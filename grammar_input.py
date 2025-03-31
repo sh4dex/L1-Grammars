@@ -4,7 +4,8 @@ import ttkbootstrap as ttk
 
 class GrammarInputWindow:
     def __init__(self):
-        self.window = ttk.Window(themename="darkly")
+        #self.window = ttk.Window(themename="darkly")
+        self.window = ttk.Window()
         self.window.title("Grammar Input")
         self.window.geometry("900x700")
         

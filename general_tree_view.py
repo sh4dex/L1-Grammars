@@ -12,7 +12,6 @@ class GeneralTreeView:
         self.window = tk.Toplevel()
         self.window.title("Árbol de Derivación General")
         self.window.geometry("1200x900")  # Increased window size
-        self.window.configure(bg="#e6f2ff")  # Light blue background
         
         self.frame = ttk.Frame(self.window)
         self.canvas = tk.Canvas(self.frame, bg="white", highlightthickness=0)
