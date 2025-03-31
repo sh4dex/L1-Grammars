@@ -84,8 +84,9 @@ class Presenter:
             if left not in non_terminals:
                 messagebox.showerror("Error", "El lado izquierdo de cada producción debe ser un símbolo no terminal.")
                 return False
-            if any(symbol not in terminals and symbol not in non_terminals for symbol in right):
-                messagebox.showerror("Error", "El lado derecho de las producciones solo puede contener símbolos válidos.")
+            # Modified check to allow λ in the right side
+            if any(symbol != "λ" and symbol not in terminals and symbol not in non_terminals for symbol in right):
+                messagebox.showerror("Error", "El lado derecho de las producciones solo puede contener símbolos válidos o λ.")
                 return False
         return True
     

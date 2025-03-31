@@ -1,5 +1,5 @@
-import matplotlib.pyplot as plt
-import networkx as nx
+import tkinter as tk
+from tkinter import ttk
 
 class GeneralTreeView:
     def __init__(self, terminal_chars, non_terminal_chars, production_rules, axiomatic):
@@ -7,54 +7,94 @@ class GeneralTreeView:
         self.non_terminal_chars = non_terminal_chars
         self.production_rules = production_rules
         self.axiomatic = axiomatic
-        self.G = nx.DiGraph()
-        self.pos = None
-        self.node_count = 0
         
-    def generate_tree(self, current, depth=0, parent=None):
-        if depth >= 6:  # Maximum depth limit
+        # Create window and canvas
+        self.window = tk.Toplevel()
+        self.window.title("Árbol de Derivación General")
+        self.window.geometry("1200x900")  # Increased window size
+        self.window.configure(bg="#e6f2ff")  # Light blue background
+        
+        self.frame = ttk.Frame(self.window)
+        self.canvas = tk.Canvas(self.frame, bg="white", highlightthickness=0)
+        self.canvas.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        # Add scrollbars
+        self.v_scrollbar = ttk.Scrollbar(self.frame, orient="vertical", command=self.canvas.yview)
+        self.h_scrollbar = ttk.Scrollbar(self.frame, orient="horizontal", command=self.canvas.xview)
+        self.v_scrollbar.pack(side="right", fill="y")
+        self.h_scrollbar.pack(side="bottom", fill="x")
+        self.canvas.configure(xscrollcommand=self.h_scrollbar.set, yscrollcommand=self.v_scrollbar.set)
+        
+        self.frame.pack(fill="both", expand=True)
+        
+        # Tree drawing parameters - increased spacing
+        self.node_width = 80  # Larger nodes
+        self.node_height = 50
+        self.vertical_spacing = 120  # More vertical space
+        self.horizontal_spacing = 160  # More horizontal space
+        self.nodes = {}  # Store node positions
+        
+    def generate_tree(self, current, x=None, y=None, level=0, parent_pos=None):
+        if level >= 6:  # Maximum depth limit
             return
             
-        node_id = f"{current}_{self.node_count}"
-        self.node_count += 1
-        self.G.add_node(node_id, label=current)
-        
-        if parent is not None:
-            self.G.add_edge(parent, node_id)
+        if x is None:  # Root node
+            x = 600  # Start from middle with more space
+            y = 80
             
-        # Only continue if the current string contains non-terminals
-        if any(nt in current for nt in self.non_terminal_chars):
-            for left, right in self.production_rules:
-                if left in current:
-                    # Generate one child for each possible production
-                    new_string = current.replace(left, right, 1)
-                    self.generate_tree(new_string, depth + 1, node_id)
+        # Draw current node
+        node_id = self.draw_node(current, x, y)
+        self.nodes[current + str(level)] = (x, y)  # Added level to key to avoid duplicates
+        
+        # Draw connection to parent
+        if parent_pos:
+            self.draw_arrow(parent_pos[0], parent_pos[1], x, y)
+        
+        # Calculate children positions and generate subtrees
+        children = []
+        for left, right in self.production_rules:
+            if left in current:
+                new_string = current.replace(left, right, 1)
+                children.append(new_string)
+        
+        if children:
+            # Increase width based on number of children and level
+            width_multiplier = max(1, level * 0.5 + 1)  # Wider spacing for deeper levels
+            width = len(children) * self.horizontal_spacing * width_multiplier
+            start_x = x - width/2 + (self.horizontal_spacing * width_multiplier)/2
+            
+            for i, child in enumerate(children):
+                child_x = start_x + i * (self.horizontal_spacing * width_multiplier)
+                child_y = y + self.vertical_spacing
+                self.generate_tree(child, child_x, child_y, level + 1, (x, y))
+    
+    def draw_node(self, text, x, y):
+        # Draw circle
+        radius = self.node_width/2
+        self.canvas.create_oval(
+            x - radius, y - radius,
+            x + radius, y + radius,
+            fill="white", outline="black", width=2
+        )
+        # Draw text
+        self.canvas.create_text(
+            x, y, text=text,
+            font=("Arial", 12, "bold")  # Larger font
+        )
+        return (x, y)
+    
+    def draw_arrow(self, x1, y1, x2, y2):
+        # Draw line with arrow
+        self.canvas.create_line(
+            x1, y1 + self.node_height/2,
+            x2, y2 - self.node_height/2,
+            arrow=tk.LAST, width=2
+        )
     
     def show_tree(self):
-        if not self.G.nodes():
-            return
-            
-        plt.figure(figsize=(12, 8))
-        self.pos = nx.spring_layout(self.G, k=1, iterations=50)
-        
-        # Draw nodes
-        nx.draw_networkx_nodes(self.G, self.pos, 
-                             node_color='lightblue',
-                             node_size=2000,
-                             alpha=0.7)
-        
-        # Draw edges
-        nx.draw_networkx_edges(self.G, self.pos, 
-                             edge_color='gray',
-                             arrows=True,
-                             arrowsize=20)
-        
-        # Draw labels
-        labels = nx.get_node_attributes(self.G, 'label')
-        nx.draw_networkx_labels(self.G, self.pos, labels,
-                              font_size=10,
-                              font_weight='bold')
-        
-        plt.title("General Derivation Tree (up to depth 5)")
-        plt.axis('off')
-        plt.show()
+        self.generate_tree(self.axiomatic)
+        # Update scroll region to include all objects
+        self.canvas.config(scrollregion=self.canvas.bbox("all"))
+        # Center the view
+        self.canvas.xview_moveto(0.5)
+        self.canvas.yview_moveto(0)
