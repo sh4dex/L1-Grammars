@@ -23,26 +23,22 @@ class MenuWindow:
         self.setup_ui()
         
     def setup_ui(self):
-        # Create buttons frame
+        # Create single button frame for all buttons
         button_frame = ttk.Frame(self.window, padding=20)
         button_frame.pack(fill="x")
         
-        # Create buttons
+        # Create all buttons in a single row
         self.input_grammar_btn = ttk.Button(button_frame, text="Edit Grammar", style="primary", command=self.on_input_grammar)
         self.input_grammar_btn.pack(side="left", padx=5)
         
         self.check_word_btn = ttk.Button(button_frame, text="Comprobar palabra", style="info", command=self.on_check_word)
         self.check_word_btn.pack(side="left", padx=5)
         
-        # Create frames for trees
-        trees_frame = ttk.Frame(self.window, padding=20)
-        trees_frame.pack(fill="both", expand=True)
+        self.general_tree_btn = ttk.Button(button_frame, text="Árbol derivación general", style="success")
+        self.general_tree_btn.pack(side="left", padx=5)
         
-        self.general_tree_btn = ttk.Button(trees_frame, text="Árbol derivación general", style="success")
-        self.general_tree_btn.pack(side="left", expand=True, padx=10)
-        
-        self.particular_tree_btn = ttk.Button(trees_frame, text="Árbol derivación particular", style="success")
-        self.particular_tree_btn.pack(side="right", expand=True, padx=10)
+        self.particular_tree_btn = ttk.Button(button_frame, text="Árbol derivación particular", style="success")
+        self.particular_tree_btn.pack(side="left", padx=5)
         
         # Grammar display frame
         self.grammar_frame = ttk.LabelFrame(self.window, text="Current Grammar", padding=20)

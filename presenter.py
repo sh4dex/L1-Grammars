@@ -108,16 +108,21 @@ class Presenter:
         return self.generate_derivation(word, self.axiomatic_char)
     
     #TODO: Explicar cuando llegue a casa
-    def generate_derivation(self, target, current, depth=0):
+    def generate_derivation(self, target, current, depth=0, steps=None):
+        if steps is None:
+            steps = [current]
+            
         if depth > 100:
             return False
             
-        # Handle empty string (lambda) case
         current = current.replace("λ", "")
             
         if current == target:
             if any(char in self.non_terminal_chars for char in current):
                 return False
+            print("\nDerivation steps:")
+            for i, step in enumerate(steps):
+                print(f"{i+1}. {step}")
             return True
             
         if len(current) > len(target) * 2:
@@ -125,13 +130,14 @@ class Presenter:
             
         for left, right in self.production_rules:
             if left in current:
-                # Handle lambda production by replacing with empty string
                 new_right = "" if right == "λ" else right
                 new_current = current.replace(left, new_right, 1)
-                if self.generate_derivation(target, new_current, depth + 1):
+                steps.append(new_current)
+                if self.generate_derivation(target, new_current, depth + 1, steps):
                     return True
+                steps.pop()
         return False
-    
+
     def on_menu_check_word(self):
         self.menu_window.window.withdraw()
         self.show_check_grammar()
