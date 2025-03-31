@@ -1,15 +1,11 @@
 # Dependencias principales
 python>=3.8
-tkinter>=8.6  # Normalmente incluido en Python, pero se especifica por claridad
+tkinter>=8.6 
 
-# Dependencias para desarrollo y testing
+
 pytest>=7.0.0
 pytest-cov>=3.0.0
 black>=22.1.0
 flake8>=4.0.0
 mypy>=0.910
 python-dotenv>=0.19.0
-
-# Dependencias opcionales para futuras mejoras
-graphviz>=0.20.1  # Para visualización avanzada de árboles
-Pillow>=9.0.0  # Para manejo de imágenes si se añaden iconos
